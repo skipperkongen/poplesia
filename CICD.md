@@ -1,5 +1,7 @@
 # K8S Argo instructions
 
+## CD
+
 Based on:
 - https://argoproj.github.io/argo-cd/getting_started/
 - https://youtu.be/2WSJF7d8dUg (That DevOps Guy)
@@ -26,3 +28,8 @@ Finally, deploy app:
 ```
 k apply -n argocd -f argo/argocd/app.yaml
 ```
+
+## CI
+
+Based on:
+- https://docs.docker.com/docker-hub/builds/
