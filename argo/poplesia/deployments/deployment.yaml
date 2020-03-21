@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: poplesia
-        image: skipperkongen/poplesia:0.0.1
+        image: skipperkongen/poplesia:0.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
