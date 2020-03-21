@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-deploy
+  name: poplesia-deploy
   labels:
-    app: example-app
+    app: poplesia
   annotations:
 spec:
   selector:
     matchLabels:
-      app: example-app
+      app: poplesia
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -18,11 +18,11 @@ spec:
   template:
     metadata:
       labels:
-        app: example-app
+        app: poplesia
     spec:
       containers:
-      - name: example-app
-        image: aimvector/python:1.0.1
+      - name: poplesia
+        image: skipperkongen/poplesia:0.0.1
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
