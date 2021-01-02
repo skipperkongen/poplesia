@@ -29,7 +29,8 @@ for i, href in enumerate(get_front_links(soup)):
         html = subresp.text
         subsoup = BeautifulSoup(html, 'html.parser')
         print(subsoup.title.text)
-        text = subsoup.find('div', class_='article-bodytext')
-        print(text.getText())
+        text = subsoup.find('div', class_='article-bodytext').getText()
+        text = " ".join(text.split())
+        print(text)
     else:
         continue
