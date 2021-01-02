@@ -46,7 +46,7 @@ else:
     print('Warning: device not online')
 
 print('Storing information on disk')
-imageio.imwrite('capture.jpg', frame)
+imageio.imwrite('capture_peripheral.jpg', frame)
 capture_json = {
     'type': 'poplesia/capture/v0.0.1',
     'timestamp': int(time.time()),
@@ -64,7 +64,7 @@ for face_encoding in face_encodings:
         'type': 'human/face_encoding',
         'data': face_encoding.tolist()
     })
-with open('capture.json', 'w') as capture_file:
+with open('capture_peripheral.json', 'w') as capture_file:
     json.dump(capture_json, capture_file)
 print('Wrote capture to disk')
 

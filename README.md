@@ -48,7 +48,7 @@ gathering information.
 |Source|Object types|Howto page|
 |-|-|-|
 |Computer peripherals|faces, speech, location|[PERIPHERAL](./PERIPHERAL.md)|
+|HTML pages|text, images|[SCRAPING](./SCRAPING.md)|
 |Web cameras|images, video|[WEBCAM](./WEBCAM.md)|
 |Wikipedia|entities, text, images|todo|
 |OpenStreetMap|entities|todo|
-|HTML pages|text, images|todo|
