@@ -3,6 +3,8 @@ import time
 
 from bs4 import BeautifulSoup
 import requests
+import spacy
+nlp = spacy.load('da_core_news_md')
 
 MAX_ARTICLES = 1
 
@@ -21,16 +23,27 @@ def get_front_links(soup):
         # get first href
         yield art.find('a').attrs['href']
 
-subpages = []
+captures = []
 for i, href in enumerate(get_front_links(soup)):
     if i >= MAX_ARTICLES: break
     subresp = requests.get(href)
     if subresp.status_code == 200:
         html = subresp.text
         subsoup = BeautifulSoup(html, 'html.parser')
-        print(subsoup.title.text)
         text = subsoup.find('div', class_='article-bodytext').getText()
         text = " ".join(text.split())
-        print(text)
+        ents = [e.text for e in nlp(text).ents]
+        capture = {
+            'type': 'poplesia/capture/scraping/v1',
+            'timestamp': int(time.time()),
+            'url': '',
+            'title': '',
+            'entities': ents
+        }
+        captures.append(capture)
     else:
         continue
+
+with open('capture_scraping')
+for capture in captures:
+    print(capture)

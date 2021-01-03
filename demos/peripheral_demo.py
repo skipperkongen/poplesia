@@ -1,5 +1,6 @@
 import json
 import time
+import uuid
 
 import cv2
 import face_recognition as fr
@@ -14,7 +15,9 @@ with sr.Microphone() as microphone:
         print('Adjusting for ambient noise')
         recog.adjust_for_ambient_noise(microphone)
         print('Please say something now...')
+        from_timestamp = int(time.time())
         audio = recog.listen(microphone)
+        to_timestamp = int(time.time())
         spoken = recog.recognize_google(audio, language='EN-us')
         print('Audio capture complete')
 
@@ -40,36 +43,52 @@ print('Detecting location from IP')
 resp = requests.get('https://ipinfo.io')
 if resp.status_code == 200:
     print('Location detected')
-    loc = resp.json()
+    network_loc = resp.json()
 else:
-    loc = None
+    network_loc = None
     print('Warning: device not online')
 
 print('Storing information on disk')
 imageio.imwrite('capture_peripheral.jpg', frame)
-capture_json = {
-    'type': 'poplesia/capture/v0.0.1',
-    'timestamp': int(time.time()),
-    'location': loc,
-    'data': []
-}
+
+captures = []
 
 if spoken:
-    capture_json['data'].append({
-        'type': 'human/speech',
-        'data': spoken
-    })
+    capture = {
+        'id': str(uuid.uuid4()),
+        'type': 'poplesia/types/audio_capture',
+        'timestamp': from_timestamp,
+        'agent': {
+            'id': str(uuid.uuid4()),
+            'type': 'microphone',
+            'spec': 'MacBook Pro (15-inch, 2017)',
+            'location': network_loc
+        },
+        'text': spoken
+    }
+    captures.append(capture)
+
 for face_encoding in face_encodings:
-    capture_json['data'].append({
-        'type': 'human/face_encoding',
-        'data': face_encoding.tolist()
-    })
+    capture = {
+        'id': str(uuid.uuid4()),
+        'type': 'poplesia/types/face_capture',
+        'timestamp': from_timestamp,
+        'agent': {
+            'type': 'camera',
+            'id': str(uuid.uuid4()),
+            'location': network_loc,
+        },
+        'face_encoding_128': face_encoding.tolist()
+    }
+    captures.append(capture)
+
 with open('capture_peripheral.json', 'w') as capture_file:
-    json.dump(capture_json, capture_file)
+    for capture in captures:
+        capture_file.write(f'{json.dumps(capture)}\n')
 print('Wrote capture to disk')
 
 print()
 print('Summary:')
 print(f'- Speech detected: {spoken}')
 print(f'- Faces detected: {len(face_encodings)}')
-print(f'- Location detected: {loc is not None}')
+print(f'- Location detected: {network_loc is not None}')

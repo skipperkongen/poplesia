@@ -24,3 +24,15 @@ Run demo:
 ```
 python ./demos/scraping_demo.py
 ```
+
+### Understanding language
+
+You can use NLTK and SpaCY to extract semantics from text.
+
+Install language model for [Danish](https://spacy.io/api/annotation#section-named-entities):
+
+```
+python -m spacy download da_core_news_sm
+# or
+python -m spacy download da_core_news_md
+```
